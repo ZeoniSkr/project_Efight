@@ -5,6 +5,7 @@
 }
 
 :root {
+    /* Thème Sombre par défaut */
     --bg: #0b0d12;
     --bg-soft: #121722;
     --card: #161c28;
@@ -18,6 +19,26 @@
     --success: #22c55e;
     --warning: #f59e0b;
     --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+/* Thème Clair - Activé via JavaScript */
+body.light-mode {
+    --bg: #f0f2f5;
+    --bg-soft: #ffffff;
+    --card: #ffffff;
+    --card-2: #f8f9fa;
+    --text: #1a1a1b;
+    --muted: #65676b;
+    --border: #dbdee1;
+    --white: #000000;
+    --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Style pour la nouvelle section de paiement */
+.payment-area {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px dashed var(--border);
 }
 
 html {
@@ -71,13 +92,7 @@ textarea {
     background: var(--bg-soft);
 }
 
-.section-label {
-    color: var(--muted);
-    text-transform: uppercase;
-    font-size: 12px;
-    letter-spacing: 2px;
-    margin-bottom: 12px;
-}
+
 
 h1 {
     font-size: clamp(2rem, 4vw, 3.5rem);
