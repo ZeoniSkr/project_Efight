@@ -517,6 +517,56 @@ function generateTicket(registration, event) {
     ticketContainer.scrollIntoView({ behavior: "smooth" });
 }
 
+
+function showPaymentForm(registration, event) {
+    const formContainer = document.getElementById("dynamicFormFields");
+    const submitBtn = document.querySelector("#registrationForm button[type='submit']");
+
+    // On cache le bouton de soumission précédent
+    submitBtn.style.display = "none";
+
+    const paymentHTML = `
+        <div class="payment-box">
+            <h3>Paiement Sécurisé</h3>
+            <p style="margin-bottom: 15px; font-size: 0.9rem;">Total à régler : <strong>Gratuit (Démo)</strong></p>
+            <div class="form-group">
+                <label>Nom sur la carte</label>
+                <input type="text" id="cardName" placeholder="M. JEAN DUPONT" required>
+            </div>
+            <div class="form-group">
+                <label>Numéro de carte</label>
+                <input type="text" id="cardNumber" maxlength="16" placeholder="1234 5678 9101 1121" required>
+            </div>
+            <div class="form-row-2">
+                <div class="form-group">
+                    <label>Date d'expiration</label>
+                    <input type="text" id="cardExpiry" placeholder="MM/AA" maxlength="5" required>
+                </div>
+                <div class="form-group">
+                    <label>CVC (3 chiffres)</label>
+                    <input type="text" id="cardCvc" maxlength="3" placeholder="123" required>
+                </div>
+            </div>
+            <button type="button" id="confirmPayment" class="btn btn-primary" style="width:100%">Confirmer et Payer</button>
+        </div>
+    `;
+
+    formContainer.innerHTML = paymentHTML;
+
+    document.getElementById("confirmPayment").addEventListener("click", function() {
+        // Simple vérification visuelle
+        const card = document.getElementById("cardNumber").value;
+        if(card.length < 16) {
+            alert("Veuillez entrer un numéro de carte valide à 16 chiffres.");
+            return;
+        }
+
+        saveToLocalStorage(registration);
+        generateTicket(registration, event);
+        document.getElementById("registrationForm").innerHTML = "<h2>Merci pour votre achat !</h2>";
+    });
+}
+
 function handleFormSubmit() {
     const form = document.getElementById("registrationForm");
     const errorBox = document.getElementById("formErrors");
@@ -569,9 +619,7 @@ function handleFormSubmit() {
             registration.conditionsMedicales = document.getElementById("conditionsMedicales").value.trim();
         }
 
-        saveToLocalStorage(registration);
-        generateTicket(registration, event);
-        form.reset();
+        showPaymentForm(registration, event);
     });
 }
 
@@ -596,9 +644,32 @@ function initMobileMenu() {
         mainNav.classList.toggle("show");
     });
 }
+/**
+ * Fonction appelée directement par le bouton HTML via l'attribut onclick.
+ * Elle ajoute ou retire la classe 'light-mode' au corps du document.
+ */
+function basculerMode() {
+    // 1. On bascule la classe sur le body
+    document.body.classList.toggle('light-mode');
+
+    // 2. On vérifie si on est en mode clair pour le sauvegarder
+    const estEnModeClair = document.body.classList.contains('light-mode');
+    localStorage.setItem('theme', estEnModeClair ? 'light' : 'dark');
+}
+
+/**
+ * Cette petite fonction sert uniquement à appliquer le mode sauvegardé
+ * au chargement de la page, sans attendre le clic.
+ */
+function appliquerThemeSauvegarde() {
+    if (localStorage.getItem('theme') === 'light') {
+        document.body.classList.add('light-mode');
+    }
+}
 
 document.addEventListener("DOMContentLoaded", function () {
     initMobileMenu();
+    appliquerThemeSauvegarde(); // Applique le mode clair si déjà sauvegardé
     displayHomeEvents();
     displayEvents();
     displayEventDetails();
@@ -606,3 +677,4 @@ document.addEventListener("DOMContentLoaded", function () {
     handleFormSubmit();
     initContactForm();
 });
+
