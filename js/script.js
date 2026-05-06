@@ -525,7 +525,7 @@ function showPaymentForm(registration, event) {
     const formContainer = document.getElementById("dynamicFormFields");
     const submitBtn = document.querySelector("#registrationForm button[type='submit']");
 
-    // On cache le bouton de soumission précédent
+
     submitBtn.style.display = "none";
 
     const paymentHTML = `
@@ -557,7 +557,7 @@ function showPaymentForm(registration, event) {
     formContainer.innerHTML = paymentHTML;
 
     document.getElementById("confirmPayment").addEventListener("click", function() {
-        // Simple vérification visuelle
+
         const card = document.getElementById("cardNumber").value;
         if(card.length < 16) {
             alert("Veuillez entrer un numéro de carte valide à 16 chiffres.");
@@ -647,10 +647,7 @@ function initMobileMenu() {
         mainNav.classList.toggle("show");
     });
 }
-/**
- * Fonction appelée directement par le bouton HTML via l'attribut onclick.
- * Elle ajoute ou retire la classe 'light-mode' au corps du document.
- */
+
 function basculerMode() {
     // 1. On bascule la classe sur le body
     document.body.classList.toggle('light-mode');
@@ -660,10 +657,6 @@ function basculerMode() {
     localStorage.setItem('theme', estEnModeClair ? 'light' : 'dark');
 }
 
-/**
- * Cette petite fonction sert uniquement à appliquer le mode sauvegardé
- * au chargement de la page, sans attendre le clic.
- */
 function appliquerThemeSauvegarde() {
     if (localStorage.getItem('theme') === 'light') {
         document.body.classList.add('light-mode');
