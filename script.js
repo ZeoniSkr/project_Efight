@@ -7,6 +7,7 @@ const events = [
         type: "spectator",
         description:
             "Un grand gala MMA pour les fans avec combats principaux, ambiance arena et expériences premium.",
+        image: "/img/ARNAUD_FLOFLO_FACEOFF.png",
         fighters: [
             { name: "Fighter A", weight: "85kg", record: "15-3-0" },
             { name: "Fighter B", weight: "84kg", record: "12-2-0" }
@@ -129,7 +130,9 @@ function getBadgeLabel(type) {
 function createEventCard(event) {
     return `
     <article class="event-card">
-      <div class="card-image">[ Image Placeholder ]</div>
+      <div class="card-image">
+   <img src="${event.image}" alt="${event.name}">
+       </div>
       <div class="card-content">
         <span class="${getBadgeClass(event.type)}">${getBadgeLabel(event.type)}</span>
         <h3>${event.name}</h3>
