@@ -21,6 +21,7 @@ const events = [
         type: "participant",
         description:
             "Événement orienté inscription combattants, qualifications et affrontements de haut niveau.",
+        image: "/img/ilian_jules_faceoff.png",
         fighters: [
             { name: "Fighter C", weight: "77kg", record: "11-4-0" },
             { name: "Fighter D", weight: "78kg", record: "13-1-0" }
@@ -34,76 +35,12 @@ const events = [
         type: "spectator",
         description:
             "Soirée spectaculaire avec affrontements de champions et diffusion en direct.",
+        image: "/img/Lauris_Raph_faceoff.png",
         fighters: [
             { name: "Fighter E", weight: "70kg", record: "14-5-0" },
             { name: "Fighter F", weight: "71kg", record: "16-2-0" }
         ]
     },
-    {
-        id: 4,
-        name: "Fight Fest 2026",
-        date: "2026-06-12",
-        location: "Miami",
-        type: "participant",
-        description:
-            "Événement de participation pour combattants émergents et semi-professionnels.",
-        fighters: [
-            { name: "Fighter G", weight: "66kg", record: "8-2-0" },
-            { name: "Fighter H", weight: "67kg", record: "10-3-0" }
-        ]
-    },
-    {
-        id: 5,
-        name: "Warriors Arena",
-        date: "2026-06-20",
-        location: "Chicago",
-        type: "spectator",
-        description:
-            "Une soirée intense dans une ambiance arena avec combats premium et show visuel.",
-        fighters: [
-            { name: "Fighter I", weight: "92kg", record: "18-6-0" },
-            { name: "Fighter J", weight: "93kg", record: "20-4-0" }
-        ]
-    },
-    {
-        id: 6,
-        name: "Thunder in the Octagon",
-        date: "2026-06-28",
-        location: "Boston",
-        type: "participant",
-        description:
-            "Compétition d’octogone ouverte aux combattants prêts à performer devant le public.",
-        fighters: [
-            { name: "Fighter K", weight: "73kg", record: "9-2-0" },
-            { name: "Fighter L", weight: "72kg", record: "7-1-0" }
-        ]
-    },
-    {
-        id: 7,
-        name: "Combat Night Special",
-        date: "2026-07-04",
-        location: "Dallas",
-        type: "spectator",
-        description:
-            "Événement spécial avec main event, animations et places pour tous les budgets.",
-        fighters: [
-            { name: "Fighter M", weight: "80kg", record: "17-7-0" },
-            { name: "Fighter N", weight: "79kg", record: "14-3-0" }
-        ]
-    },
-    {
-        id: 8,
-        name: "Elite Fighting Series",
-        date: "2026-07-14",
-        location: "Phoenix",
-        type: "participant",
-        description:
-            "Série élite réservée aux profils motivés voulant rejoindre une carte compétitive.",
-        fighters: [
-            { name: "Fighter O", weight: "61kg", record: "12-3-0" },
-            { name: "Fighter P", weight: "60kg", record: "11-1-0" }
-        ]
-    }
 ];
 
 function getEventById(id) {
