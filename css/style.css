@@ -171,33 +171,6 @@ p {
     margin-bottom: 25px;
 }
 
-.placeholder {
-    border: 1px solid var(--border);
-    background: linear-gradient(145deg, #171d29, #111622);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--muted);
-    text-align: center;
-}
-
-.hero-placeholder {
-    min-height: 360px;
-}
-
-.banner-placeholder {
-    min-height: 280px;
-}
-
-.video-placeholder {
-    min-height: 280px;
-}
-
-.team-placeholder {
-    width: 200px;
-    height: 90px;
-    margin: 0 auto 16px;
-}
 
 .btn {
     display: inline-block;
