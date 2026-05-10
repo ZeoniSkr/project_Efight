@@ -3,14 +3,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EFIGHT - Paiement </title>
+  <title>EFIGHT - Paiement</title>
   <link rel="stylesheet" href="../css/style.css" />
-  <script src="../js/script.js"></script>
 </head>
 <body>
+
 <header class="site-header">
   <div class="container nav-container">
     <a href="index.html" class="logo">EFIGHT</a>
+
+    <button id="modeToggle"
+            class="theme-toggle-btn"
+            onclick="basculerMode()"
+            aria-label="Changer de thème">
+      Dark/light
+    </button>
+
+    <button class="menu-toggle" id="menuToggle" aria-label="Ouvrir le menu">
+      ☰
+    </button>
+
     <nav class="main-nav" id="mainNav">
       <a href="index.html">Accueil</a>
       <a href="events.html">Events</a>
@@ -22,40 +34,107 @@
 
 <main class="section">
   <div class="container narrow-container">
+
+    <p class="section-label">PAIEMENT</p>
     <h1>Paiement sécurisé</h1>
 
     <div class="form-box">
-      <div id="paymentSummary" style="margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border);">
-      </div>
 
-      <form id="paymentForm" novalidate>
+      <!-- Récap automatique injecté par JS -->
+      <div id="paymentSummary"></div>
+
+      <form id="paymentForm" class="payment-card" novalidate>
+
+        <!-- erreurs -->
         <div id="paymentErrors" class="form-errors"></div>
 
+        <h2>Informations bancaires</h2>
+
         <div class="form-group">
-          <label for="cardName">Nom sur la carte</label>
-          <input type="text" id="cardName" placeholder="M. JEAN DUPONT" required />
+          <label for="cardName">Nom sur la carte *</label>
+          <input
+                  type="text"
+                  id="cardName"
+                  placeholder="JEAN DUPONT"
+                  required
+          />
         </div>
 
         <div class="form-group">
-          <label for="cardNumber">Numéro de carte</label>
-          <input type="text" id="cardNumber" placeholder="1234 5678 1234 5678" maxlength="19" required />
+          <label for="cardNumber">Numéro de carte *</label>
+          <input
+                  type="text"
+                  id="cardNumber"
+                  maxlength="19"
+                  placeholder="1234 5678 9012 3456"
+                  required
+          />
         </div>
 
         <div class="form-row-2">
+
           <div class="form-group">
-            <label for="expDate">Date d'expiration</label>
-            <input type="text" id="expDate" placeholder="MM/AA" maxlength="5" required />
+            <label for="expDate">Expiration *</label>
+            <input
+                    type="text"
+                    id="expDate"
+                    maxlength="5"
+                    placeholder="MM/AA"
+                    required
+            />
           </div>
+
           <div class="form-group">
-            <label for="cvv">CVV</label>
-            <input type="text" id="cvv" placeholder="123" maxlength="3" required />
+            <label for="cvv">CVV *</label>
+            <input
+                    type="text"
+                    id="cvv"
+                    maxlength="3"
+                    placeholder="123"
+                    required
+            />
           </div>
+
         </div>
 
-        <button type="submit" class="btn btn-primary" style="width: 100%;">Confirmer le paiement</button>
+        <button type="submit" class="btn btn-primary" style="width:100%;">
+          Confirmer le paiement
+        </button>
+
       </form>
+
+      <!-- Ticket généré automatiquement -->
+      <div id="ticketContainer" class="ticket-section hidden"></div>
+
     </div>
+
   </div>
 </main>
+
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div>
+      <h3>EFIGHT</h3>
+      <p>Plateforme pour événements MMA/UFC.</p>
+    </div>
+
+    <div>
+      <h4>Liens</h4>
+      <ul>
+        <li><a href="index.html">Accueil</a></li>
+        <li><a href="events.html">Events</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="about.html">About</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Contact</h4>
+      <p>mma_efight@efrei.net</p>
+    </div>
+  </div>
+</footer>
+
+<script src="../js/script.js"></script>
 </body>
 </html>

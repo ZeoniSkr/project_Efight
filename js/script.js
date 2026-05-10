@@ -313,7 +313,7 @@ function buildParticipantForm(event) {
     </div>
 
     <div class="checkbox-group">
-      <input type="checkbox" id="responsabilite" name="responsabilite" />
+      <input type="checkbox" id="responsabilite" name="responsabilite" required />
       <label for="responsabilite">
         J'accepte la décharge de responsabilité *
       </label>
@@ -429,7 +429,7 @@ function generateTicket(registration, event) {
     if (registration.type === "spectator") {
         extraRows = `
             <tr>
-                <th>Nombre de places</th>
+                <th>Places</th>
                 <td>${registration.places}</td>
             </tr>
             <tr>
@@ -440,7 +440,11 @@ function generateTicket(registration, event) {
     } else {
         extraRows = `
             <tr>
-                <th>Catégorie de poids</th>
+                <th>Date de naissance</th>
+                <td>${registration.dateNaissance}</td>
+            </tr>
+            <tr>
+                <th>Catégorie poids</th>
                 <td>${registration.categoriePoids}</td>
             </tr>
             <tr>
@@ -456,12 +460,16 @@ function generateTicket(registration, event) {
                 <td>${registration.experience}</td>
             </tr>
             <tr>
-                <th>Style de combat</th>
+                <th>Style</th>
                 <td>${registration.styleCombat}</td>
             </tr>
             <tr>
                 <th>Club</th>
                 <td>${registration.club}</td>
+            </tr>
+            <tr>
+                <th>Groupe sanguin</th>
+                <td>${registration.groupeSanguin}</td>
             </tr>
         `;
     }
@@ -474,70 +482,42 @@ function generateTicket(registration, event) {
 
             <table class="ticket-table">
                 <tr>
+                    <th>Ticket ID</th>
+                    <td>#${registration.id}</td>
+                </tr>
+                <tr>
                     <th>Nom</th>
                     <td>${registration.nom}</td>
                 </tr>
-
                 <tr>
                     <th>Email</th>
                     <td>${registration.email}</td>
                 </tr>
-
                 <tr>
                     <th>Téléphone</th>
                     <td>${registration.telephone}</td>
                 </tr>
-
                 <tr>
                     <th>Événement</th>
                     <td>${event.name}</td>
                 </tr>
-
-                <tr>
-                    <th>Type</th>
-                    <td>
-                        ${
-        registration.type === "spectator"
-            ? "Spectator"
-            : "Participant"
-    }
-                    </td>
-                </tr>
-
                 <tr>
                     <th>Date</th>
                     <td>${formatDate(event.date)}</td>
                 </tr>
-
                 <tr>
                     <th>Lieu</th>
                     <td>${event.location}</td>
                 </tr>
-
-                <tr>
-                    <th>Ticket ID</th>
-                    <td>#${registration.id}</td>
-                </tr>
-
                 ${extraRows}
             </table>
 
-            <div class="ticket-actions">
-                <button
-                    class="btn btn-primary"
-                    onclick="window.print()"
-                >
-                    Imprimer le ticket
-                </button>
-            </div>
+            <button class="btn btn-primary" onclick="window.print()">
+                Imprimer le ticket
+            </button>
         </div>
     `;
-
-    ticketContainer.scrollIntoView({
-        behavior: "smooth"
-    });
 }
-
 
 
 function handleFormSubmit() {
@@ -555,6 +535,7 @@ function handleFormSubmit() {
 
         if (!event) return;
 
+        // Validation
         const errors = validateRegistrationForm(event.type);
 
         if (errors.length > 0) {
@@ -566,6 +547,7 @@ function handleFormSubmit() {
         errorBox.style.display = "none";
         errorBox.innerHTML = "";
 
+        // Base commune
         const registration = {
             id: generateUniqueId(),
             eventId: event.id,
@@ -575,21 +557,61 @@ function handleFormSubmit() {
             telephone: document.getElementById("telephone").value.trim()
         };
 
+        // CAS SPECTATOR → paiement obligatoire
         if (event.type === "spectator") {
-            registration.places = document.getElementById("places").value;
-            registration.categorie = document.querySelector('input[name="categorie"]:checked').value;
-        } else {
-            registration.dateNaissance = document.getElementById("dateNaissance").value.trim();
-            registration.categoriePoids = document.getElementById("categoriePoids").value.trim();
-            registration.poids = document.getElementById("poids").value.trim();
-            registration.record = document.getElementById("record").value.trim();
-            registration.experience = document.getElementById("experience").value.trim();
-            registration.styleCombat = document.getElementById("styleCombat").value.trim();
-            registration.club = document.getElementById("club").value.trim();
-            registration.groupeSanguin = document.getElementById("groupeSanguin").value.trim();
-            registration.contactUrgenceNom = document.getElementById("contactUrgenceNom").value.trim();
-            registration.contactUrgenceTel = document.getElementById("contactUrgenceTel").value.trim();
-            registration.conditionsMedicales = document.getElementById("conditionsMedicales").value.trim();
+            registration.places =
+                document.getElementById("places").value;
+
+            registration.categorie =
+                document.querySelector('input[name="categorie"]:checked').value;
+
+            // Sauvegarde temporaire pour payment.html
+            localStorage.setItem(
+                "tempRegistration",
+                JSON.stringify(registration)
+            );
+
+            // Redirection paiement
+            window.location.href = `payment.html?eventId=${event.id}`;
+        }
+
+        // CAS PARTICIPANT → ticket direct
+        else {
+            registration.dateNaissance =
+                document.getElementById("dateNaissance").value.trim();
+
+            registration.categoriePoids =
+                document.getElementById("categoriePoids").value;
+
+            registration.poids =
+                document.getElementById("poids").value.trim();
+
+            registration.record =
+                document.getElementById("record").value.trim();
+
+            registration.experience =
+                document.getElementById("experience").value.trim();
+
+            registration.styleCombat =
+                document.getElementById("styleCombat").value.trim();
+
+            registration.club =
+                document.getElementById("club").value.trim();
+
+            registration.groupeSanguin =
+                document.getElementById("groupeSanguin").value.trim();
+
+            registration.contactUrgenceNom =
+                document.getElementById("contactUrgenceNom").value.trim();
+
+            registration.contactUrgenceTel =
+                document.getElementById("contactUrgenceTel").value.trim();
+
+            registration.conditionsMedicales =
+                document.getElementById("conditionsMedicales").value.trim();
+
+            saveToLocalStorage(registration);
+            generateTicket(registration, event);
         }
     });
 }
@@ -633,94 +655,101 @@ function appliquerThemeSauvegarde() {
 
 
 
-function Payment() {
-    const form = document.getElementById("registrationForm");
-    if (!form) return;
-
-    form.addEventListener("submit", function (e) {
-        // Récupération de l'ID de l'événement dans l'URL
-        const params = new URLSearchParams(window.location.search);
-        const eventId = params.get("id") || params.get("eventId");
-        const event = getEventById(eventId);
-
-        if (!event) return;
-
-        // PARTICULIER : Événement Participant(pas d'option paiement juste une inscription)
-        if (String(eventId) === "2") {
-            e.preventDefault();
-
-            // Objet registration pour le ticket qui sera généré
-            const registration = {
-                id: generateUniqueId(),
-                eventId: event.id,
-                type: event.type,
-                nom: document.getElementById("nom").value.trim(),
-                email: document.getElementById("email").value.trim(),
-                telephone: document.getElementById("telephone").value.trim()
-            };
-
-            // Succès
-            const formBox = form.closest('.form-box');
-            if (formBox) {
-                formBox.innerHTML = `
-                    <div style="text-align: center; padding: 30px; border: 2px solid #22c55e; border-radius: 10px; background: rgba(34, 197, 94, 0.1);">
-                        <h2 style="color: #22c55e;">✅ Inscription réussie !</h2>
-                        <p style="color: var(--text);">Votre place pour l'événement gratuit a été réservée!</p>
-                    </div>
-                `;
-            }
-
-            // Affichage du ticket
-            generateTicket(registration, event);
-        }
-        // Redirection vers payment.html
-        else {
-            e.preventDefault();
-            window.location.href = "payment.html";
-        }
-    });
-}
-
-// Initialisation au chargement de la page
-document.addEventListener("DOMContentLoaded", function() {
-    Payment();
-});
-
-
 document.addEventListener("DOMContentLoaded", function () {
     initMobileMenu();
-    appliquerThemeSauvegarde(); // Applique le mode clair si déjà sauvegardé
+    appliquerThemeSauvegarde();
     displayHomeEvents();
     displayEvents();
     displayEventDetails();
     renderRegisterPage();
-    handleFormSubmit();
     initContactForm();
+    handleFormSubmit();
+    FormatPayment();
 });
 
 function FormatPayment() {
     const paymentForm = document.getElementById("paymentForm");
     if (!paymentForm) return;
 
-    // Masquage automatique du numéro de carte (espaces)
+    const tempData = JSON.parse(localStorage.getItem("tempRegistration"));
+    if (!tempData) return;
+
+    const event = getEventById(tempData.eventId);
+    if (!event) return;
+
+    const paymentSummary = document.getElementById("paymentSummary");
+    const errorBox = document.getElementById("paymentErrors");
+
+    paymentSummary.innerHTML = `
+        <h2>Récapitulatif avant paiement</h2>
+
+        <table class="ticket-table">
+            <tr>
+                <th>Nom</th>
+                <td>${tempData.nom}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>${tempData.email}</td>
+            </tr>
+            <tr>
+                <th>Téléphone</th>
+                <td>${tempData.telephone}</td>
+            </tr>
+            <tr>
+                <th>Événement</th>
+                <td>${event.name}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>${formatDate(event.date)}</td>
+            </tr>
+            <tr>
+                <th>Lieu</th>
+                <td>${event.location}</td>
+            </tr>
+            <tr>
+                <th>Places</th>
+                <td>${tempData.places}</td>
+            </tr>
+            <tr>
+                <th>Catégorie</th>
+                <td>${tempData.categorie}</td>
+            </tr>
+        </table>
+    `;
+
     const cardInput = document.getElementById("cardNumber");
-    cardInput.addEventListener("input", (e) => {
-        e.target.value = e.target.value.replace(/[^\d]/g, '').replace(/(.{4})/g, '$1 ').trim();
-    });
+
+    if (cardInput) {
+        cardInput.addEventListener("input", function (e) {
+            e.target.value = e.target.value
+                .replace(/[^\d]/g, "")
+                .replace(/(.{4})/g, "$1 ")
+                .trim();
+        });
+    }
 
     paymentForm.addEventListener("submit", function (e) {
         e.preventDefault();
-        const errorBox = document.getElementById("paymentErrors");
-        const cardNumber = document.getElementById("cardNumber").value.replace(/\s/g, '');
-        const expDate = document.getElementById("expDate").value;
-        const cvv = document.getElementById("cvv").value;
+
+        const cardNumber = document.getElementById("cardNumber").value.replace(/\s/g, "");
+        const expDate = document.getElementById("expDate").value.trim();
+        const cvv = document.getElementById("cvv").value.trim();
 
         let errors = [];
 
-        // Validation simple (Luhn ou format)
-        if (cardNumber.length !== 16) errors.push("Le numéro de carte doit contenir 16 chiffres.");
-        if (!/^\d{2}\/\d{2}$/.test(expDate)) errors.push("Format date invalide (MM/AA).");
-        if (cvv.length !== 3) errors.push("Le CVV doit contenir 3 chiffres.");
+        if (cardNumber.length !== 16) {
+            errors.push("Numéro de carte invalide");
+        }
+
+        if (!/^\d{2}\/\d{2}$/.test(expDate)) {
+            errors.push("Date invalide");
+        }
+
+        if (cvv.length !== 3) {
+            errors.push("CVV invalide");
+        }
 
         if (errors.length > 0) {
             errorBox.style.display = "block";
@@ -728,18 +757,21 @@ function FormatPayment() {
             return;
         }
 
-        // Si tout est ok
-        const finalData = JSON.parse(localStorage.getItem("tempRegistration"));
-        saveToLocalStorage(finalData); // Sauvegarde définitive
+        errorBox.style.display = "none";
+        errorBox.innerHTML = "";
 
-        alert("Paiement validé ! Redirection vers votre ticket...");
-        // Ici on peut soit afficher le ticket, soit rediriger vers une page succès
-        window.location.href = "register.html?status=success";
+        saveToLocalStorage(tempData);
+        localStorage.removeItem("tempRegistration");
+
+        let ticketContainer = document.getElementById("ticketContainer");
+
+        if (!ticketContainer) {
+            ticketContainer = document.createElement("div");
+            ticketContainer.id = "ticketContainer";
+            ticketContainer.className = "ticket-section";
+            paymentForm.parentElement.appendChild(ticketContainer);
+        }
+
+        generateTicket(tempData, event);
     });
 }
-
-// Modifier votre DOMContentLoaded pour inclure le paiement
-document.addEventListener("DOMContentLoaded", function () {
-    // ... vos appels existants
-    FormatPayment();
-});

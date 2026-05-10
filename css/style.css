@@ -4,13 +4,12 @@
     box-sizing: border-box;
 }
 
-
-.theme-toggle-btn{
+.theme-toggle-btn {
     background: #0b0d12;
     color: red;
 }
+
 :root {
-    /* Thème Sombre par défaut */
     --bg: #0b0d12;
     --bg-soft: #121722;
     --card: #161c28;
@@ -26,7 +25,6 @@
     --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
 }
 
-/* Thème Clair - Activé via JavaScript */
 body.light-mode {
     --bg: #f0f2f5;
     --bg-soft: #ffffff;
@@ -39,7 +37,6 @@ body.light-mode {
     --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Style pour la nouvelle section de paiement */
 .payment-area {
     margin-top: 20px;
     padding-top: 20px;
@@ -97,8 +94,6 @@ textarea {
     background: var(--bg-soft);
 }
 
-
-
 h1 {
     font-size: clamp(2rem, 4vw, 3.5rem);
     margin-bottom: 18px;
@@ -109,7 +104,8 @@ h2 {
     margin-bottom: 25px;
 }
 
-h3, h4 {
+h3,
+h4 {
     margin-bottom: 10px;
 }
 
@@ -150,7 +146,7 @@ p {
     transition: 0.3s ease;
 }
 
-.main-nav a:hover{
+.main-nav a:hover {
     color: var(--white);
 }
 
@@ -185,7 +181,6 @@ p {
     text-align: center;
 }
 
-
 .hero-placeholder {
     min-height: 360px;
 }
@@ -199,7 +194,7 @@ p {
 }
 
 .team-placeholder {
-    width:200px;
+    width: 200px;
     height: 90px;
     margin: 0 auto 16px;
 }
@@ -502,32 +497,80 @@ textarea:focus {
 }
 
 .ticket-section {
-    margin-top: 30px;
+    margin-top: 35px;
 }
 
 .ticket-card {
-    background: linear-gradient(160deg, #131926, #0d121c);
+    background: var(--card);
     border: 2px dashed var(--accent);
-    padding: 28px;
+    padding: 30px;
     box-shadow: var(--shadow);
     animation: fadeUp 0.6s ease;
+    border-radius: 12px;
+    color: var(--text);
 }
 
 .ticket-card h2 {
-    margin-bottom: 18px;
+    text-align: center;
+    margin-bottom: 25px;
+    color: var(--white);
+    font-size: 2rem;
+}
+
+.ticket-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    overflow: hidden;
+    border-radius: 10px;
+}
+
+.ticket-table tr:nth-child(even) {
+    background: var(--card-2);
+}
+
+.ticket-table tr:nth-child(odd) {
+    background: var(--bg-soft);
+}
+
+.ticket-table th,
+.ticket-table td {
+    border: 1px solid var(--border);
+    padding: 15px;
+}
+
+.ticket-table th {
+    text-align: left;
+    width: 35%;
+    font-weight: bold;
     color: var(--white);
 }
 
-.ticket-card p {
-    margin-bottom: 10px;
+.ticket-table td {
     color: var(--text);
 }
 
 .ticket-actions {
-    margin-top: 20px;
+    margin-top: 25px;
     display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.ticket-actions button {
+    min-width: 220px;
+}
+
+#paymentSummary {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+
+#paymentSummary h2 {
+    margin-bottom: 20px;
+    text-align: center;
 }
 
 .about-block {
@@ -543,9 +586,11 @@ textarea:focus {
 .team-card {
     padding: 56px;
 }
-.Nom_profession{
+
+.Nom_profession {
     padding: 30px;
 }
+
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -590,21 +635,36 @@ textarea:focus {
 }
 
 @media print {
+    body {
+        background: white;
+        color: black;
+    }
+
     body * {
         visibility: hidden;
     }
 
-    #ticketContainer,
-    #ticketContainer * {
+    .ticket-card,
+    .ticket-card * {
         visibility: visible;
     }
 
-    #ticketContainer {
+    .ticket-card {
         position: absolute;
-        left: 0;
         top: 0;
+        left: 0;
         width: 100%;
+        border: none;
+        box-shadow: none;
         padding: 30px;
+        background: white;
+        color: black;
+    }
+
+    .ticket-table th,
+    .ticket-table td {
+        border: 1px solid black;
+        color: black;
     }
 
     .ticket-actions {
@@ -668,39 +728,15 @@ textarea:focus {
     }
 }
 
-
-.ticket-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+.payment-card {
+    background: var(--card-2);
+    border: 1px solid var(--border);
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
 }
 
-.ticket-table th,
-.ticket-table td {
-    border: 1px solid #444;
-    padding: 12px;
-}
-
-.ticket-table th {
-    text-align: left;
-    width: 35%;
-}
-
-.ticket-card {
-    /* Utilise la variable --card qui change selon le mode pour le ticket généré*/
-    background: var(--card);
-    border: 2px dashed var(--accent);
-    padding: 28px;
-    box-shadow: var(--shadow);
-    animation: fadeUp 0.6s ease;
-    /* Pour s'assurer que le texte change de couleur aussi */
-    color: var(--text);
-}
-
-.ticket-card h2 {
-    color: var(--white);
-}
-
-.ticket-card p {
-    color: var(--text);
+.payment-card input {
+    letter-spacing: 2px;
+    font-size: 1rem;
 }
