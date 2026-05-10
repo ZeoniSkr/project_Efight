@@ -667,3 +667,40 @@ textarea:focus {
         min-height: 220px;
     }
 }
+
+
+.ticket-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.ticket-table th,
+.ticket-table td {
+    border: 1px solid #444;
+    padding: 12px;
+}
+
+.ticket-table th {
+    text-align: left;
+    width: 35%;
+}
+
+.ticket-card {
+    /* Utilise la variable --card qui change selon le mode pour le ticket généré*/
+    background: var(--card);
+    border: 2px dashed var(--accent);
+    padding: 28px;
+    box-shadow: var(--shadow);
+    animation: fadeUp 0.6s ease;
+    /* Pour s'assurer que le texte change de couleur aussi */
+    color: var(--text);
+}
+
+.ticket-card h2 {
+    color: var(--white);
+}
+
+.ticket-card p {
+    color: var(--text);
+}

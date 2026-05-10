@@ -421,40 +421,121 @@ function validateRegistrationForm(eventType) {
 
 function generateTicket(registration, event) {
     const ticketContainer = document.getElementById("ticketContainer");
+
     if (!ticketContainer) return;
 
-    let extraInfo = "";
+    let extraRows = "";
 
     if (registration.type === "spectator") {
-        extraInfo = `
-      <p><strong>Nombre de places :</strong> ${registration.places}</p>
-      <p><strong>Catégorie :</strong> ${registration.categorie}</p>
-    `;
+        extraRows = `
+            <tr>
+                <th>Nombre de places</th>
+                <td>${registration.places}</td>
+            </tr>
+            <tr>
+                <th>Catégorie</th>
+                <td>${registration.categorie}</td>
+            </tr>
+        `;
     } else {
-        extraInfo = `
-      <p><strong>Catégorie de poids :</strong> ${registration.categoriePoids}</p>
-      <p><strong>Poids :</strong> ${registration.poids}</p>
-    `;
+        extraRows = `
+            <tr>
+                <th>Catégorie de poids</th>
+                <td>${registration.categoriePoids}</td>
+            </tr>
+            <tr>
+                <th>Poids</th>
+                <td>${registration.poids}</td>
+            </tr>
+            <tr>
+                <th>Record</th>
+                <td>${registration.record}</td>
+            </tr>
+            <tr>
+                <th>Expérience</th>
+                <td>${registration.experience}</td>
+            </tr>
+            <tr>
+                <th>Style de combat</th>
+                <td>${registration.styleCombat}</td>
+            </tr>
+            <tr>
+                <th>Club</th>
+                <td>${registration.club}</td>
+            </tr>
+        `;
     }
 
     ticketContainer.classList.remove("hidden");
-    ticketContainer.innerHTML = `
-    <div class="ticket-card">
-      <h2>EFIGHT TICKET</h2>
-      <p><strong>Nom :</strong> ${registration.nom}</p>
-      <p><strong>Event :</strong> ${event.name}</p>
-      <p><strong>Type :</strong> ${registration.type === "spectator" ? "Spectator" : "Participant"}</p>
-      <p><strong>Date :</strong> ${formatDate(event.date)}</p>
-      <p><strong>Lieu :</strong> ${event.location}</p>
-      <p><strong>Ticket ID :</strong> #${registration.id}</p>
-      ${extraInfo}
-      <div class="ticket-actions">
-        <button class="btn btn-primary" onclick="window.print()">Imprimer le ticket</button>
-      </div>
-    </div>
-  `;
 
-    ticketContainer.scrollIntoView({ behavior: "smooth" });
+    ticketContainer.innerHTML = `
+        <div class="ticket-card">
+            <h2>EFIGHT TICKET</h2>
+
+            <table class="ticket-table">
+                <tr>
+                    <th>Nom</th>
+                    <td>${registration.nom}</td>
+                </tr>
+
+                <tr>
+                    <th>Email</th>
+                    <td>${registration.email}</td>
+                </tr>
+
+                <tr>
+                    <th>Téléphone</th>
+                    <td>${registration.telephone}</td>
+                </tr>
+
+                <tr>
+                    <th>Événement</th>
+                    <td>${event.name}</td>
+                </tr>
+
+                <tr>
+                    <th>Type</th>
+                    <td>
+                        ${
+        registration.type === "spectator"
+            ? "Spectator"
+            : "Participant"
+    }
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>Date</th>
+                    <td>${formatDate(event.date)}</td>
+                </tr>
+
+                <tr>
+                    <th>Lieu</th>
+                    <td>${event.location}</td>
+                </tr>
+
+                <tr>
+                    <th>Ticket ID</th>
+                    <td>#${registration.id}</td>
+                </tr>
+
+                ${extraRows}
+            </table>
+
+            <div class="ticket-actions">
+                <button
+                    class="btn btn-primary"
+                    onclick="window.print()"
+                >
+                    Imprimer le ticket
+                </button>
+            </div>
+        </div>
+    `;
+
+    ticketContainer.scrollIntoView({
+        behavior: "smooth"
+    });
 }
 
 
@@ -551,39 +632,50 @@ function appliquerThemeSauvegarde() {
 }
 
 
-/**
- * Fonction de redirection vers le paiement lié
- */
+
 function Payment() {
     const form = document.getElementById("registrationForm");
     if (!form) return;
 
     form.addEventListener("submit", function (e) {
-        // 1. On récupère l'ID de l'événement dans l'URL
+        // Récupération de l'ID de l'événement dans l'URL
         const params = new URLSearchParams(window.location.search);
-        // On vérifie "id" ou "eventId" selon comment ton URL est construite
         const eventId = params.get("id") || params.get("eventId");
+        const event = getEventById(eventId);
 
-        // 2. CAS PARTICULIER : Événement ID 2
+        if (!event) return;
+
+        // PARTICULIER : Événement Participant(pas d'option paiement juste une inscription)
         if (String(eventId) === "2") {
-            e.preventDefault(); // On empêche la redirection vers payment.html
+            e.preventDefault();
 
-            // On remplace le contenu du formulaire par un message de succès
+            // Objet registration pour le ticket qui sera généré
+            const registration = {
+                id: generateUniqueId(),
+                eventId: event.id,
+                type: event.type,
+                nom: document.getElementById("nom").value.trim(),
+                email: document.getElementById("email").value.trim(),
+                telephone: document.getElementById("telephone").value.trim()
+            };
+
+            // Succès
             const formBox = form.closest('.form-box');
             if (formBox) {
                 formBox.innerHTML = `
                     <div style="text-align: center; padding: 30px; border: 2px solid #22c55e; border-radius: 10px; background: rgba(34, 197, 94, 0.1);">
                         <h2 style="color: #22c55e;">✅ Inscription réussie !</h2>
                         <p style="color: var(--text);">Votre place pour l'événement gratuit a été réservée!</p>
-                        <a href="index.html" class="btn btn-primary" style="margin-top: 20px; display: inline-block;">Retour à l'accueil</a>
                     </div>
                 `;
             }
+
+            // Affichage du ticket
+            generateTicket(registration, event);
         }
-        // 3. AUTRES CAS : Redirection automatique
+        // Redirection vers payment.html
         else {
-            e.preventDefault(); // On stoppe l'envoi classique du formulaire
-            // Tu peux ici sauvegarder les données si besoin avant de partir
+            e.preventDefault();
             window.location.href = "payment.html";
         }
     });
