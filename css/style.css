@@ -4,6 +4,11 @@
     box-sizing: border-box;
 }
 
+
+.theme-toggle-btn{
+    background: #0b0d12;
+    color: red;
+}
 :root {
     /* Thème Sombre par défaut */
     --bg: #0b0d12;
@@ -132,7 +137,7 @@ p {
     font-size: 1.4rem;
     font-weight: bold;
     letter-spacing: 1px;
-    color: var(--white);
+    color: red;
 }
 
 .main-nav {
@@ -141,12 +146,11 @@ p {
 }
 
 .main-nav a {
-    color: var(--muted);
+    color: red;
     transition: 0.3s ease;
 }
 
-.main-nav a:hover,
-.main-nav a.active {
+.main-nav a:hover{
     color: var(--white);
 }
 
@@ -181,6 +185,7 @@ p {
     text-align: center;
 }
 
+
 .hero-placeholder {
     min-height: 360px;
 }
@@ -194,7 +199,7 @@ p {
 }
 
 .team-placeholder {
-    width: 90px;
+    width:200px;
     height: 90px;
     margin: 0 auto 16px;
 }
@@ -536,10 +541,11 @@ textarea:focus {
 }
 
 .team-card {
-    padding: 20px;
-    text-align: center;
+    padding: 56px;
 }
-
+.Nom_profession{
+    padding: 30px;
+}
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
