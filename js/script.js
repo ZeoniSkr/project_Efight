@@ -606,7 +606,7 @@ document.addEventListener("DOMContentLoaded", function () {
     initContactForm();
 });
 
-function initPaymentLogic() {
+function FormatPayment() {
     const paymentForm = document.getElementById("paymentForm");
     if (!paymentForm) return;
 
@@ -649,5 +649,5 @@ function initPaymentLogic() {
 // Modifier votre DOMContentLoaded pour inclure le paiement
 document.addEventListener("DOMContentLoaded", function () {
     // ... vos appels existants
-    initPaymentLogic();
+    FormatPayment();
 });
