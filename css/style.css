@@ -4,11 +4,6 @@
     box-sizing: border-box;
 }
 
-.theme-toggle-btn {
-    background: #0b0d12;
-    color: red;
-}
-
 :root {
     --bg: #0b0d12;
     --bg-soft: #121722;
@@ -32,15 +27,9 @@ body.light-mode {
     --card-2: #f8f9fa;
     --text: #1a1a1b;
     --muted: #65676b;
-    --border: #dbdee1;
+    --border: #d6d9dd;
     --white: #000000;
     --shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-.payment-area {
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 2px dashed var(--border);
 }
 
 html {
@@ -54,7 +43,8 @@ body {
     line-height: 1.6;
 }
 
-img {
+img,
+video {
     max-width: 100%;
     display: block;
 }
@@ -113,6 +103,8 @@ p {
     color: var(--muted);
 }
 
+/* HEADER */
+
 .site-header {
     background: rgba(11, 13, 18, 0.95);
     border-bottom: 1px solid var(--border);
@@ -159,6 +151,16 @@ p {
     cursor: pointer;
 }
 
+.theme-toggle-btn {
+    background: var(--card);
+    color: red;
+    border: 1px solid var(--border);
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+/* HERO */
+
 .hero-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -171,6 +173,19 @@ p {
     margin-bottom: 25px;
 }
 
+.hero-placeholder {
+    min-height: 360px;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.hero-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* BUTTONS */
 
 .btn {
     display: inline-block;
@@ -183,7 +198,7 @@ p {
 
 .btn-primary {
     background: var(--accent);
-    color: var(--white);
+    color: white;
 }
 
 .btn-primary:hover {
@@ -202,6 +217,8 @@ p {
     margin-top: 30px;
 }
 
+/* GRIDS */
+
 .cards-grid {
     display: grid;
     gap: 25px;
@@ -215,6 +232,8 @@ p {
     grid-template-columns: repeat(3, 1fr);
 }
 
+/* CARDS */
+
 .event-card,
 .team-card,
 .stat-card,
@@ -223,32 +242,35 @@ p {
     background: var(--card);
     border: 1px solid var(--border);
     box-shadow: var(--shadow);
-    animation: fadeUp 0.6s ease;
+    border-radius: 12px;
+    overflow: hidden;
 }
 
 .event-card {
-    overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .event-card:hover {
     transform: translateY(-6px);
-    box-shadow: 0 18px 35px rgba(0, 0, 0, 0.45);
 }
 
 .card-image {
     height: 220px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: #1c2230;
-    color: var(--muted);
-    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+    background: var(--card-2);
+}
+
+.card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .card-content {
     padding: 18px;
 }
+
+/* BADGES */
 
 .badge {
     display: inline-block;
@@ -264,26 +286,32 @@ p {
 .badge-spectator {
     background: rgba(34, 197, 94, 0.15);
     color: #86efac;
-    border: 1px solid rgba(34, 197, 94, 0.3);
 }
 
 .badge-participant {
     background: rgba(245, 158, 11, 0.15);
     color: #fcd34d;
-    border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
 .event-meta {
     margin: 10px 0 18px;
     color: var(--muted);
-    font-size: 0.95rem;
 }
+
+/* HIGHLIGHTS */
 
 .highlights-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 24px;
 }
+
+.video-placeholder {
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+/* FOOTER */
 
 .site-footer {
     background: #090b10;
@@ -303,19 +331,28 @@ p {
     color: var(--muted);
 }
 
-.footer-grid a:hover {
-    color: var(--white);
-}
+/* EVENT DETAIL */
 
 .detail-top {
     margin-bottom: 26px;
 }
 
-.detail-main-box {
+.detail-main-box,
+.detail-description {
     background: var(--card);
     border: 1px solid var(--border);
     padding: 24px;
-    margin-top: 18px;
+    border-radius: 12px;
+}
+
+.detail-description {
+    margin-top: 30px;
+}
+
+.detail-description ul {
+    list-style: disc;
+    padding-left: 20px;
+    color: var(--muted);
 }
 
 .fighters-grid {
@@ -329,14 +366,7 @@ p {
     border: 1px solid var(--border);
     background: var(--card-2);
     padding: 18px;
-}
-
-.fighter-avatar {
-    width: 70px;
-    height: 70px;
-    background: #2a3242;
-    border: 1px solid var(--border);
-    margin-bottom: 12px;
+    border-radius: 10px;
 }
 
 .detail-infos {
@@ -346,56 +376,11 @@ p {
     margin-bottom: 28px;
 }
 
-.detail-description {
-    margin-top: 30px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    padding: 24px;
-}
-
-.detail-description ul {
-    list-style: disc;
-    padding-left: 20px;
-    color: var(--muted);
-    margin-top: 12px;
-}
+/* FORMS */
 
 .form-box {
     padding: 28px;
     margin-bottom: 28px;
-}
-
-.type-switch {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin: 22px 0;
-}
-
-.type-card {
-    border: 1px solid var(--border);
-    padding: 18px;
-    text-align: center;
-    background: var(--card-2);
-}
-
-.type-card.active {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 1px var(--accent);
-}
-
-.type-card span {
-    display: block;
-    color: var(--muted);
-    font-size: 0.92rem;
-    margin-top: 6px;
-}
-
-.event-selected-box {
-    border: 1px solid var(--border);
-    padding: 16px;
-    background: var(--card-2);
-    color: var(--muted);
 }
 
 .form-group {
@@ -419,10 +404,11 @@ select,
 textarea {
     width: 100%;
     padding: 12px 14px;
-    background: #0f141d;
+    background: var(--card-2);
     border: 1px solid var(--border);
-    color: var(--white);
+    color: var(--text);
     outline: none;
+    border-radius: 8px;
 }
 
 input:focus,
@@ -441,11 +427,7 @@ textarea:focus {
     border: 1px solid var(--border);
     padding: 14px;
     background: var(--card-2);
-}
-
-.radio-option label {
-    margin: 0;
-    cursor: pointer;
+    border-radius: 8px;
 }
 
 .checkbox-group {
@@ -457,8 +439,9 @@ textarea:focus {
 
 .checkbox-group input {
     width: auto;
-    margin-top: 4px;
 }
+
+/* ERRORS */
 
 .form-errors {
     background: rgba(230, 57, 70, 0.12);
@@ -467,7 +450,10 @@ textarea:focus {
     padding: 14px;
     margin-bottom: 18px;
     display: none;
+    border-radius: 10px;
 }
+
+/* TICKETS */
 
 .ticket-section {
     margin-top: 35px;
@@ -477,33 +463,22 @@ textarea:focus {
     background: var(--card);
     border: 2px dashed var(--accent);
     padding: 30px;
-    box-shadow: var(--shadow);
-    animation: fadeUp 0.6s ease;
     border-radius: 12px;
-    color: var(--text);
 }
 
 .ticket-card h2 {
     text-align: center;
     margin-bottom: 25px;
-    color: var(--white);
-    font-size: 2rem;
 }
 
 .ticket-table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
-    overflow: hidden;
-    border-radius: 10px;
 }
 
 .ticket-table tr:nth-child(even) {
     background: var(--card-2);
-}
-
-.ticket-table tr:nth-child(odd) {
-    background: var(--bg-soft);
 }
 
 .ticket-table th,
@@ -513,38 +488,10 @@ textarea:focus {
 }
 
 .ticket-table th {
-    text-align: left;
     width: 35%;
-    font-weight: bold;
-    color: var(--white);
 }
 
-.ticket-table td {
-    color: var(--text);
-}
-
-.ticket-actions {
-    margin-top: 25px;
-    display: flex;
-    justify-content: center;
-}
-
-.ticket-actions button {
-    min-width: 220px;
-}
-
-#paymentSummary {
-    background: var(--card);
-    border: 1px solid var(--border);
-    padding: 20px;
-    border-radius: 10px;
-    margin-bottom: 25px;
-}
-
-#paymentSummary h2 {
-    margin-bottom: 20px;
-    text-align: center;
-}
+/* ABOUT */
 
 .about-block {
     margin-bottom: 45px;
@@ -552,16 +499,46 @@ textarea:focus {
 
 .team-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 22px;
 }
 
 .team-card {
-    padding: 56px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.team-placeholder {
+    width: 100%;
+    height: 320px;
+    background: #111827;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.team-placeholder img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
 }
 
 .Nom_profession {
-    padding: 30px;
+    padding: 20px;
+}
+
+.team-card h3,
+.team-card p {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.team-card h3 {
+    margin-top: 16px;
 }
 
 .stats-grid {
@@ -575,11 +552,6 @@ textarea:focus {
     text-align: center;
 }
 
-.stat-card h3 {
-    font-size: 2rem;
-    color: var(--white);
-}
-
 .list {
     list-style: disc;
     padding-left: 20px;
@@ -587,14 +559,35 @@ textarea:focus {
     margin-top: 10px;
 }
 
+/* PAYMENT */
+
+.payment-card {
+    background: var(--card-2);
+    border: 1px solid var(--border);
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.payment-area {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px dashed var(--border);
+}
+
+#paymentSummary {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 20px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+
 .hidden {
     display: none;
 }
 
-.success-message {
-    margin-top: 14px;
-    color: #86efac;
-}
+/* ANIMATION */
 
 @keyframes fadeUp {
     from {
@@ -606,6 +599,8 @@ textarea:focus {
         transform: translateY(0);
     }
 }
+
+/* PRINT */
 
 @media print {
     body {
@@ -627,23 +622,12 @@ textarea:focus {
         top: 0;
         left: 0;
         width: 100%;
-        border: none;
-        box-shadow: none;
-        padding: 30px;
         background: white;
         color: black;
     }
-
-    .ticket-table th,
-    .ticket-table td {
-        border: 1px solid black;
-        color: black;
-    }
-
-    .ticket-actions {
-        display: none;
-    }
 }
+
+/* RESPONSIVE */
 
 @media (max-width: 992px) {
     .home-events {
@@ -685,8 +669,7 @@ textarea:focus {
 
     .home-events,
     .events-grid,
-    .form-row-2,
-    .type-switch {
+    .form-row-2 {
         grid-template-columns: 1fr;
     }
 
@@ -695,21 +678,7 @@ textarea:focus {
     }
 
     .hero-placeholder,
-    .video-placeholder,
-    .banner-placeholder {
-        min-height: 220px;
+    .team-placeholder {
+        height: 220px;
     }
-}
-
-.payment-card {
-    background: var(--card-2);
-    border: 1px solid var(--border);
-    padding: 20px;
-    border-radius: 12px;
-    margin-bottom: 20px;
-}
-
-.payment-card input {
-    letter-spacing: 2px;
-    font-size: 1rem;
 }
