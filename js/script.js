@@ -3,7 +3,7 @@ const events = [
         id: 1,
         name: "Championship Fight Night",
         date: "2026-05-15",
-        location: "Las Vegas",
+        location: "Bordeaux",
         type: "spectator",
         description:
             "Un grand gala MMA pour les fans avec combats principaux, ambiance arena et expériences premium.",
@@ -17,7 +17,7 @@ const events = [
         id: 2,
         name: "Ultimate Showdown 2026",
         date: "2026-05-22",
-        location: "New York",
+        location: "Maroc",
         type: "participant",
         description:
             "Événement orienté inscription combattants, qualifications et affrontements de haut niveau.",
@@ -31,7 +31,7 @@ const events = [
         id: 3,
         name: "Battle of Champions",
         date: "2026-06-05",
-        location: "Los Angeles",
+        location: "Paris",
         type: "spectator",
         description:
             "Soirée spectaculaire avec affrontements de champions et diffusion en direct.",
@@ -458,54 +458,6 @@ function generateTicket(registration, event) {
 }
 
 
-function showPaymentForm(registration, event) {
-    const formContainer = document.getElementById("dynamicFormFields");
-    const submitBtn = document.querySelector("#registrationForm button[type='submit']");
-
-
-    submitBtn.style.display = "none";
-
-    const paymentHTML = `
-        <div class="payment-box">
-            <h3>Paiement Sécurisé</h3>
-            <p style="margin-bottom: 15px; font-size: 0.9rem;">Total à régler : <strong>Gratuit (Démo)</strong></p>
-            <div class="form-group">
-                <label>Nom sur la carte</label>
-                <input type="text" id="cardName" placeholder="M. JEAN DUPONT" required>
-            </div>
-            <div class="form-group">
-                <label>Numéro de carte</label>
-                <input type="text" id="cardNumber" maxlength="16" placeholder="1234 5678 9101 1121" required>
-            </div>
-            <div class="form-row-2">
-                <div class="form-group">
-                    <label>Date d'expiration</label>
-                    <input type="text" id="cardExpiry" placeholder="MM/AA" maxlength="5" required>
-                </div>
-                <div class="form-group">
-                    <label>CVC (3 chiffres)</label>
-                    <input type="text" id="cardCvc" maxlength="3" placeholder="123" required>
-                </div>
-            </div>
-            <button type="button" id="confirmPayment" class="btn btn-primary" style="width:100%">Confirmer et Payer</button>
-        </div>
-    `;
-
-    formContainer.innerHTML = paymentHTML;
-
-    document.getElementById("confirmPayment").addEventListener("click", function() {
-
-        const card = document.getElementById("cardNumber").value;
-        if(card.length < 16) {
-            alert("Veuillez entrer un numéro de carte valide à 16 chiffres.");
-            return;
-        }
-
-        saveToLocalStorage(registration);
-        generateTicket(registration, event);
-        document.getElementById("registrationForm").innerHTML = "<h2>Merci pour votre achat !</h2>";
-    });
-}
 
 function handleFormSubmit() {
     const form = document.getElementById("registrationForm");
@@ -558,8 +510,6 @@ function handleFormSubmit() {
             registration.contactUrgenceTel = document.getElementById("contactUrgenceTel").value.trim();
             registration.conditionsMedicales = document.getElementById("conditionsMedicales").value.trim();
         }
-
-        showPaymentForm(registration, event);
     });
 }
 
@@ -600,6 +550,51 @@ function appliquerThemeSauvegarde() {
     }
 }
 
+
+/**
+ * Fonction de redirection vers le paiement lié
+ */
+function Payment() {
+    const form = document.getElementById("registrationForm");
+    if (!form) return;
+
+    form.addEventListener("submit", function (e) {
+        // 1. On récupère l'ID de l'événement dans l'URL
+        const params = new URLSearchParams(window.location.search);
+        // On vérifie "id" ou "eventId" selon comment ton URL est construite
+        const eventId = params.get("id") || params.get("eventId");
+
+        // 2. CAS PARTICULIER : Événement ID 2
+        if (String(eventId) === "2") {
+            e.preventDefault(); // On empêche la redirection vers payment.html
+
+            // On remplace le contenu du formulaire par un message de succès
+            const formBox = form.closest('.form-box');
+            if (formBox) {
+                formBox.innerHTML = `
+                    <div style="text-align: center; padding: 30px; border: 2px solid #22c55e; border-radius: 10px; background: rgba(34, 197, 94, 0.1);">
+                        <h2 style="color: #22c55e;">✅ Inscription réussie !</h2>
+                        <p style="color: var(--text);">Votre place pour l'événement gratuit a été réservée!</p>
+                        <a href="index.html" class="btn btn-primary" style="margin-top: 20px; display: inline-block;">Retour à l'accueil</a>
+                    </div>
+                `;
+            }
+        }
+        // 3. AUTRES CAS : Redirection automatique
+        else {
+            e.preventDefault(); // On stoppe l'envoi classique du formulaire
+            // Tu peux ici sauvegarder les données si besoin avant de partir
+            window.location.href = "payment.html";
+        }
+    });
+}
+
+// Initialisation au chargement de la page
+document.addEventListener("DOMContentLoaded", function() {
+    Payment();
+});
+
+
 document.addEventListener("DOMContentLoaded", function () {
     initMobileMenu();
     appliquerThemeSauvegarde(); // Applique le mode clair si déjà sauvegardé
@@ -611,3 +606,48 @@ document.addEventListener("DOMContentLoaded", function () {
     initContactForm();
 });
 
+function initPaymentLogic() {
+    const paymentForm = document.getElementById("paymentForm");
+    if (!paymentForm) return;
+
+    // Masquage automatique du numéro de carte (espaces)
+    const cardInput = document.getElementById("cardNumber");
+    cardInput.addEventListener("input", (e) => {
+        e.target.value = e.target.value.replace(/[^\d]/g, '').replace(/(.{4})/g, '$1 ').trim();
+    });
+
+    paymentForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        const errorBox = document.getElementById("paymentErrors");
+        const cardNumber = document.getElementById("cardNumber").value.replace(/\s/g, '');
+        const expDate = document.getElementById("expDate").value;
+        const cvv = document.getElementById("cvv").value;
+
+        let errors = [];
+
+        // Validation simple (Luhn ou format)
+        if (cardNumber.length !== 16) errors.push("Le numéro de carte doit contenir 16 chiffres.");
+        if (!/^\d{2}\/\d{2}$/.test(expDate)) errors.push("Format date invalide (MM/AA).");
+        if (cvv.length !== 3) errors.push("Le CVV doit contenir 3 chiffres.");
+
+        if (errors.length > 0) {
+            errorBox.style.display = "block";
+            errorBox.innerHTML = errors.map(err => `<p>${err}</p>`).join("");
+            return;
+        }
+
+        // Si tout est ok
+        const finalData = JSON.parse(localStorage.getItem("tempRegistration"));
+        saveToLocalStorage(finalData); // Sauvegarde définitive
+
+        alert("Paiement validé ! Redirection vers votre ticket...");
+        // Ici on peut soit afficher le ticket, soit rediriger vers une page succès
+        window.location.href = "register.html?status=success";
+    });
+}
+
+// Modifier votre DOMContentLoaded pour inclure le paiement
+document.addEventListener("DOMContentLoaded", function () {
+    // ... vos appels existants
+    initPaymentLogic();
+});
