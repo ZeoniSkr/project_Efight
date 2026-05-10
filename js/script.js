@@ -3,42 +3,42 @@ const events = [
         id: 1,
         name: "Championship Fight Night",
         date: "2026-05-15",
-        location: "Bordeaux",
+        location: "Fablab",
         type: "spectator",
         description:
             "Un grand gala MMA pour les fans avec combats principaux, ambiance arena et expériences premium.",
-        image: "/img/ARNAUD_FLOFLO_FACEOFF.png",
+        image: "../img/ARNAUD_FLOFLO_FACEOFF.png",
         fighters: [
-            { name: "Fighter A", weight: "85kg", record: "15-3-0" },
-            { name: "Fighter B", weight: "84kg", record: "12-2-0" }
+            { name: "FLOFLO", weight: "85kg", record: "15-3-0" },
+            { name: "ARNAUD", weight: "84kg", record: "12-2-0" }
         ]
     },
     {
         id: 2,
         name: "Ultimate Showdown 2026",
         date: "2026-05-22",
-        location: "Maroc",
+        location: "AVION A BAABAAA",
         type: "participant",
         description:
             "Événement orienté inscription combattants, qualifications et affrontements de haut niveau.",
         image: "/img/ilian_jules_faceoff.png",
         fighters: [
-            { name: "Fighter C", weight: "77kg", record: "11-4-0" },
-            { name: "Fighter D", weight: "78kg", record: "13-1-0" }
+            { name: "ILIAN", weight: "77kg", record: "11-4-0" },
+            { name: "BIIIIG J", weight: "78kg", record: "13-1-0" }
         ]
     },
     {
         id: 3,
         name: "Battle of Champions",
         date: "2026-06-05",
-        location: "Paris",
+        location: "CUISINE DE MASTER POULET",
         type: "spectator",
         description:
             "Soirée spectaculaire avec affrontements de champions et diffusion en direct.",
         image: "/img/Lauris_Raph_faceoff.png",
         fighters: [
-            { name: "Fighter E", weight: "70kg", record: "14-5-0" },
-            { name: "Fighter F", weight: "71kg", record: "16-2-0" }
+            { name: "LAUUURIS", weight: "70kg", record: "14-5-0" },
+            { name: "RAAAPHAAEL", weight: "71kg", record: "16-2-0" }
         ]
     },
 ];
@@ -126,7 +126,6 @@ function displayEventDetails() {
         .map(
             (fighter) => `
           <div class="fighter-card">
-            <div class="fighter-avatar"></div>
             <h4>${fighter.name}</h4>
             <p>Weight: ${fighter.weight}</p>
             <p>Record: ${fighter.record}</p>
@@ -147,10 +146,7 @@ function displayEventDetails() {
         </div>
       </div>
 
-      <h3>Video Preview</h3>
-      <div class="placeholder video-placeholder">
-        <span>[ Video Placeholder ]</span>
-      </div>
+      
 
       <div style="margin-top: 24px;">
         <a class="btn btn-primary" href="register.html?eventId=${event.id}">
@@ -535,7 +531,6 @@ function handleFormSubmit() {
 
         if (!event) return;
 
-        // Validation
         const errors = validateRegistrationForm(event.type);
 
         if (errors.length > 0) {
@@ -547,7 +542,6 @@ function handleFormSubmit() {
         errorBox.style.display = "none";
         errorBox.innerHTML = "";
 
-        // Base commune
         const registration = {
             id: generateUniqueId(),
             eventId: event.id,
@@ -557,7 +551,6 @@ function handleFormSubmit() {
             telephone: document.getElementById("telephone").value.trim()
         };
 
-        // CAS SPECTATOR → paiement obligatoire
         if (event.type === "spectator") {
             registration.places =
                 document.getElementById("places").value;
@@ -565,17 +558,14 @@ function handleFormSubmit() {
             registration.categorie =
                 document.querySelector('input[name="categorie"]:checked').value;
 
-            // Sauvegarde temporaire pour payment.html
             localStorage.setItem(
                 "tempRegistration",
                 JSON.stringify(registration)
             );
 
-            // Redirection paiement
             window.location.href = `payment.html?eventId=${event.id}`;
         }
 
-        // CAS PARTICIPANT → ticket direct
         else {
             registration.dateNaissance =
                 document.getElementById("dateNaissance").value.trim();
@@ -639,10 +629,8 @@ function initMobileMenu() {
 }
 
 function basculerMode() {
-    // 1. On bascule la classe sur le body
     document.body.classList.toggle('light-mode');
 
-    // 2. On vérifie si on est en mode clair pour le sauvegarder
     const estEnModeClair = document.body.classList.contains('light-mode');
     localStorage.setItem('theme', estEnModeClair ? 'light' : 'dark');
 }
